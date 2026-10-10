@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://1u3nkjrfxbo1"]
+
+[ext_resource type="Script" uid="uid://c7to7tynqs8u1" path="res://scripts/player.gd" id="1"]
+[ext_resource type="Script" uid="uid://ccgptdltsmbfr" path="res://scripts/health.gd" id="2"]
+[ext_resource type="Script" uid="uid://dp6ybaqkppt07" path="res://scripts/hurtbox.gd" id="3"]
+[ext_resource type="Script" uid="uid://diugws0nry6vb" path="res://scripts/hitbox.gd" id="4"]
+[ext_resource type="Texture2D" uid="uid://bpyc8yat7arhl" path="res://assets/sprites/hero_kai.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://b4qan3i8ciopc" path="res://assets/sprites/slash.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://cabm8pgxs0ycp" path="res://assets/sprites/shadow.png" id="7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(22, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(26, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(48, 74)
+
+[node name="Player" type="CharacterBody2D" unique_id=736015213]
+collision_layer = 2
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1321771257]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=295774148]
+modulate = Color(1, 1, 1, 0.35)
+position = Vector2(0, 2)
+scale = Vector2(0.44, 0.5)
+texture = ExtResource("7")
+
+[node name="Visuals" type="Node2D" parent="." unique_id=1314991960]
+
+[node name="Sprite" type="Sprite2D" parent="Visuals" unique_id=1210064295]
+position = Vector2(8.5, -4)
+scale = Vector2(1.5, 1.3269231)
+texture = ExtResource("5")
+centered = false
+offset = Vector2(-17, -52)
+
+[node name="AttackPivot" type="Node2D" parent="Visuals" unique_id=2057396572]
+
+[node name="WeaponFlash" type="Sprite2D" parent="Visuals/AttackPivot" unique_id=678678345]
+visible = false
+position = Vector2(30, -24)
+texture = ExtResource("6")
+
+[node name="Hitbox" type="Area2D" parent="Visuals/AttackPivot" unique_id=532137123]
+position = Vector2(18, -20)
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/AttackPivot/Hitbox" unique_id=1561692722]
+shape = SubResource("RectangleShape2D_hit")
+
+[node name="NameLabel" type="Label" parent="." unique_id=2131006545]
+offset_left = -50.0
+offset_top = -96.0
+offset_right = 50.0
+offset_bottom = -76.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Node" parent="." unique_id=599227500]
+script = ExtResource("2")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1749434005]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("3")
+health_path = NodePath("../Health")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=966822338]
+position = Vector2(10, -36)
+shape = SubResource("RectangleShape2D_hurt")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=598596328]
+zoom = Vector2(1.3, 1.3)
+position_smoothing_enabled = true

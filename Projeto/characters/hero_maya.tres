@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://m21v3nquh40e"]
+
+[ext_resource type="Script" uid="uid://cg5bjudnc4yse" path="res://scripts/character_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dulggq0wyhspy" path="res://assets/sprites/image-removebg-preview.png" id="1_qgh88"]
+[ext_resource type="Texture2D" uid="uid://fop36yqw4c8r" path="res://assets/sprites/enemy_maya.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://c0bgjruty8bar" path="res://assets/sprites/dfe41703-c39c-4ed2-82f8-9627b1e350cf-removebg-preview.png" id="4_qgh88"]
+
+[resource]
+script = ExtResource("1")
+character_name = "Puxa Frango"
+description = "tucututu tu pow pow"
+accent_color = Color(0.7, 0.95, 1, 1)
+texture = ExtResource("4_qgh88")
+sprite_height = 100.0
+move_speed = 225.0
+melee_damage = 10.0
+projectile_damage = 10.0
+enemy_name = "Sombra Azul"
+enemy_texture = ExtResource("3")
+enemy_sprite_height = 80.0
+boss_name = "Dr Hans Chucrutes"
+boss_texture = ExtResource("1_qgh88")
+boss_sprite_height = 170.0

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cbfu8qrdcpfjw"]
+
+[ext_resource type="Script" uid="uid://bw68g4nvxbihy" path="res://scripts/game_over.gd" id="1"]
+
+[node name="GameOver" type="Control" unique_id=1129883150]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="." unique_id=892096806]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.12, 0.04, 0.04, 1)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=38907810]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.32
+anchor_right = 0.5
+anchor_bottom = 0.32
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.9, 0.25, 0.25, 1)
+theme_override_font_sizes/font_size = 44
+text = "Se fudeu kkkkk"
+horizontal_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1770477091]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.55
+anchor_right = 0.5
+anchor_bottom = 0.55
+offset_left = -110.0
+offset_right = 110.0
+offset_bottom = 140.0
+theme_override_constants/separation = 20
+
+[node name="RestartButton" type="Button" parent="VBox" unique_id=1541199265]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "TENTAR NOVAMENTE"
+
+[node name="MenuButton" type="Button" parent="VBox" unique_id=1323283162]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "MENU PRINCIPAL"

@@ -1,0 +1,144 @@
+[gd_scene format=3 uid="uid://caqviv67arp64"]
+
+[ext_resource type="Script" uid="uid://cjwq5guhv67xc" path="res://scripts/character_select.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://d03hqarqf6m6e" path="res://assets/sprites/8840daf4-f8a7-4414-9f6b-44b0e590364a-removebg-preview.png" id="2_uxcyu"]
+[ext_resource type="Texture2D" uid="uid://c40u2bwucs3q7" path="res://assets/sprites/c2c23e17-7488-44d5-950f-7dacae31a0be-removebg-preview.png" id="3_fa52j"]
+[ext_resource type="Texture2D" uid="uid://c0bgjruty8bar" path="res://assets/sprites/dfe41703-c39c-4ed2-82f8-9627b1e350cf-removebg-preview.png" id="4_5wdeo"]
+
+[node name="CharacterSelect" type="Control" unique_id=1858146540]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2136254349]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.09, 0.1, 0.16, 1)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=112440370]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 30.0
+offset_right = 300.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 32
+text = "ESCOLHA SEU PERSONAGEM"
+horizontal_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=557848273]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -220.0
+offset_right = 480.0
+offset_bottom = 220.0
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Card1" type="PanelContainer" parent="HBox" unique_id=1750429463]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 400)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox/Card1" unique_id=169529636]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Portrait" type="TextureRect" parent="HBox/Card1/VBox" unique_id=2145211595]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+texture = ExtResource("2_uxcyu")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="HBox/Card1/VBox" unique_id=1269351257]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Pantera Negra"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="HBox/Card1/VBox" unique_id=1390852567]
+layout_mode = 2
+text = "Bom de briga e bom de farra"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="HBox/Card1/VBox" unique_id=1408686834]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Selecionar"
+
+[node name="Card2" type="PanelContainer" parent="HBox" unique_id=1590659374]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 400)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox/Card2" unique_id=1033730529]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Portrait" type="TextureRect" parent="HBox/Card2/VBox" unique_id=338863312]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+texture = ExtResource("3_fa52j")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="HBox/Card2/VBox" unique_id=1039075971]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Ratão Pelado"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="HBox/Card2/VBox" unique_id=246857549]
+layout_mode = 2
+text = "Pelado com a mao no bolso"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="HBox/Card2/VBox" unique_id=1412969743]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Selecionar"
+
+[node name="Card3" type="PanelContainer" parent="HBox" unique_id=99432716]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 400)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox/Card3" unique_id=914085990]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Portrait" type="TextureRect" parent="HBox/Card3/VBox" unique_id=861704061]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+texture = ExtResource("4_5wdeo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="HBox/Card3/VBox" unique_id=1918200303]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Puxa Frango"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="HBox/Card3/VBox" unique_id=1288368915]
+layout_mode = 2
+text = "tucutu tu  pow pow "
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="HBox/Card3/VBox" unique_id=2048085550]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Selecionar"

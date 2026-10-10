@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://1hfore1bdhhk"]
+
+[ext_resource type="Script" uid="uid://oyouknrdvtxu" path="res://scripts/level_manager.gd" id="1"]
+[ext_resource type="Script" uid="uid://c8phemvla836l" path="res://scripts/exit_zone.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="5"]
+[ext_resource type="Texture2D" uid="uid://bn5qbrjli7c4v" path="res://assets/sprites/bg_level1.png" id="6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_side"]
+size = Vector2(24, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(1720, 24)
+
+[node name="Level1" type="Node2D" unique_id=1854528328]
+script = ExtResource("1")
+level_display_name = "Cena 1 - Setor Industrial"
+next_level_path = "res://scenes/level_2.tscn"
+camera_limit_left = -150
+camera_limit_right = 1750
+camera_limit_top = -320
+camera_limit_bottom = 420
+
+[node name="Background" type="Node2D" parent="." unique_id=1969287226]
+z_index = -4000
+
+[node name="Backdrop" type="Sprite2D" parent="Background" unique_id=496724370]
+position = Vector2(-200, -260)
+texture = ExtResource("6")
+centered = false
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1566797560]
+position = Vector2(90, 0)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1867759699]
+position = Vector2(-30, 0)
+
+[node name="Shape" type="CollisionShape2D" parent="LeftWall" unique_id=591143941]
+shape = SubResource("RectangleShape2D_side")
+
+[node name="TopWall" type="StaticBody2D" parent="." unique_id=1495442093]
+position = Vector2(760, -100)
+
+[node name="Shape" type="CollisionShape2D" parent="TopWall" unique_id=1058570995]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="BottomWall" type="StaticBody2D" parent="." unique_id=584602812]
+position = Vector2(760, 100)
+
+[node name="Shape" type="CollisionShape2D" parent="BottomWall" unique_id=813251088]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Entities" type="Node2D" parent="." unique_id=944219036]
+
+[node name="Enemies" type="Node2D" parent="Entities" unique_id=151617684]
+
+[node name="Enemy1" parent="Entities/Enemies" unique_id=890768973 instance=ExtResource("3")]
+position = Vector2(520, -30)
+
+[node name="Enemy2" parent="Entities/Enemies" unique_id=467762810 instance=ExtResource("3")]
+position = Vector2(760, 25)
+
+[node name="Enemy3" parent="Entities/Enemies" unique_id=931484952 instance=ExtResource("3")]
+position = Vector2(1010, -10)
+
+[node name="ExitZone" type="Area2D" parent="." unique_id=277372083]
+position = Vector2(1650, 0)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2")
+
+[node name="Shape" type="CollisionShape2D" parent="ExitZone" unique_id=254291480]
+shape = SubResource("RectangleShape2D_side")
+
+[node name="HUD" parent="." unique_id=354327114 instance=ExtResource("4")]
+
+[node name="PauseMenu" parent="." unique_id=1812594626 instance=ExtResource("5")]

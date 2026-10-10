@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://o2he20d6kwhb"]
+
+[ext_resource type="Script" uid="uid://cg5bjudnc4yse" path="res://scripts/character_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://digq8bk12s06x" path="res://assets/sprites/enemy_kai.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://bvdvvdnpyik3p" path="res://assets/sprites/boss_kai.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://d03hqarqf6m6e" path="res://assets/sprites/8840daf4-f8a7-4414-9f6b-44b0e590364a-removebg-preview.png" id="4_r5uny"]
+
+[resource]
+script = ExtResource("1")
+character_name = "Pantera Negra"
+description = "Bom de briga e bom de farra"
+accent_color = Color(1, 0.85, 0.2, 1)
+texture = ExtResource("4_r5uny")
+sprite_height = 120.0
+move_speed = 240.0
+melee_damage = 11.0
+projectile_damage = 7.0
+enemy_name = "Punho de Ferro"
+enemy_texture = ExtResource("3")
+enemy_sprite_height = 90.0
+boss_name = "Brasa, o Incendiario"
+boss_texture = ExtResource("4")
+boss_sprite_height = 190.0
+boss_max_health = 280.0
