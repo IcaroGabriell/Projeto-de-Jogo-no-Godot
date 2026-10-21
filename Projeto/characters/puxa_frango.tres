@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bv8h52oheo8pr"]
+
+[ext_resource type="Texture2D" uid="uid://bktw4b07428eq" path="res://assets/sprites/spritesheet-puxa_frango.jpeg" id="1_tmer8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mry7b"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(0, 1, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_otlwb"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(382, 1, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ceaff"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(764, 1, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkbc2"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(1146, 1, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on3uo"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(0, 397, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ul17"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(382, 397, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhlt5"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(764, 397, 382, 396)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4m86"]
+atlas = ExtResource("1_tmer8")
+region = Rect2(1146, 397, 382, 396)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mry7b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_otlwb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ceaff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jkbc2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_on3uo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ul17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xhlt5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4m86")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 8.0
+}]
