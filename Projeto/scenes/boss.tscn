@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://ccgptdltsmbfr" path="res://scripts/health.gd" id="2"]
 [ext_resource type="Script" uid="uid://dp6ybaqkppt07" path="res://scripts/hurtbox.gd" id="3"]
 [ext_resource type="Script" uid="uid://diugws0nry6vb" path="res://scripts/hitbox.gd" id="4"]
-[ext_resource type="Texture2D" uid="uid://bvdvvdnpyik3p" path="res://assets/sprites/boss_kai.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://cabm8pgxs0ycp" path="res://assets/sprites/shadow.png" id="7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
@@ -32,9 +31,8 @@ texture = ExtResource("7")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2029872534]
 
-[node name="Sprite" type="Sprite2D" parent="Visuals" unique_id=1743710288]
+[node name="Sprite" type="AnimatedSprite2D" parent="Visuals" unique_id=2021655924]
 position = Vector2(0, -6)
-texture = ExtResource("5")
 centered = false
 offset = Vector2(-25, -78)
 

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ccgptdltsmbfr" path="res://scripts/health.gd" id="2"]
 [ext_resource type="Script" uid="uid://dp6ybaqkppt07" path="res://scripts/hurtbox.gd" id="3"]
 [ext_resource type="Script" uid="uid://diugws0nry6vb" path="res://scripts/hitbox.gd" id="4"]
-[ext_resource type="Texture2D" uid="uid://bpyc8yat7arhl" path="res://assets/sprites/hero_kai.png" id="5"]
+[ext_resource type="SpriteFrames" uid="uid://bv8h52oheo8pr" path="res://characters/puxa_frango.tres" id="4_smehm"]
 [ext_resource type="Texture2D" uid="uid://b4qan3i8ciopc" path="res://assets/sprites/slash.png" id="6"]
 [ext_resource type="Texture2D" uid="uid://cabm8pgxs0ycp" path="res://assets/sprites/shadow.png" id="7"]
 
@@ -33,12 +33,10 @@ texture = ExtResource("7")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=1314991960]
 
-[node name="Sprite" type="Sprite2D" parent="Visuals" unique_id=1210064295]
-position = Vector2(8.5, -4)
-scale = Vector2(1.5, 1.3269231)
-texture = ExtResource("5")
-centered = false
-offset = Vector2(-17, -52)
+[node name="Sprite" type="AnimatedSprite2D" parent="Visuals" unique_id=975978318]
+sprite_frames = ExtResource("4_smehm")
+animation = &"idle"
+offset = Vector2(0, -32)
 
 [node name="AttackPivot" type="Node2D" parent="Visuals" unique_id=2057396572]
 
