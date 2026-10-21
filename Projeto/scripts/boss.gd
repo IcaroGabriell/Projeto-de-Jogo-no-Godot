@@ -18,11 +18,14 @@ signal health_updated(current: float, max_health: float)
 var depth_min: float = -1000.0
 var depth_max: float = 1000.0
 
+var frames: SpriteFrames
+var _sprite_base_scale: Vector2 = Vector2.ONE
+
 @onready var health: Health = $Health
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var hitbox: Hitbox = $Visuals/AttackPivot/Hitbox
 @onready var visuals: Node2D = $Visuals
-@onready var sprite: Sprite2D = $Visuals/Sprite
+@onready var sprite: AnimatedSprite2D = $Visuals/Sprite
 @onready var name_label: Label = $NameLabel
 
 const SpriteUtil := preload("res://scripts/sprite_util.gd")
@@ -49,12 +52,13 @@ func _ready() -> void:
 	call_deferred("_find_target")
 
 func _refresh_visuals() -> void:
-	SpriteUtil.fit(sprite, texture, sprite_height)
+	_sprite_base_scale = SpriteUtil.apply(sprite, frames, texture, sprite_height)
 	name_label.text = boss_name
 	_update_name_position()
 
-func configure(new_name: String, new_texture: Texture2D, new_height: float, new_max_health: float) -> void:
+func configure(new_name: String, new_frames: SpriteFrames, new_texture: Texture2D, new_height: float, new_max_health: float) -> void:
 	boss_name = new_name
+	frames = new_frames
 	if new_texture:
 		texture = new_texture
 	sprite_height = new_height

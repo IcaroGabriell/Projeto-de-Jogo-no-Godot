@@ -77,7 +77,7 @@ func _setup_enemies() -> void:
 			enemy.depth_min = depth_min
 			enemy.depth_max = depth_max
 			if data:
-				enemy.configure(data.enemy_name, data.enemy_texture, data.enemy_sprite_height)
+				enemy.configure(data.enemy_name, data.enemy_frames, data.enemy_texture, data.enemy_sprite_height)
 			enemy.health_pack_scene = HEALTH_PACK_SCENE
 			enemy.died.connect(_on_enemy_died)
 	hud.update_enemy_count(enemies_remaining)
@@ -92,7 +92,7 @@ func _setup_boss() -> void:
 	boss.depth_min = depth_min
 	boss.depth_max = depth_max
 	if data:
-		boss.configure(data.boss_name, data.boss_texture, data.boss_sprite_height, data.boss_max_health)
+		boss.configure(data.boss_name, data.boss_frames, data.boss_texture, data.boss_sprite_height, data.boss_max_health)
 	boss.died.connect(_on_boss_died)
 	hud.setup_boss(boss)
 

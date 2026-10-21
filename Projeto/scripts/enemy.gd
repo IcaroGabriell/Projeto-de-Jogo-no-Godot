@@ -3,9 +3,9 @@ class_name Enemy
 
 ## Inimigo comum com IA simples: persegue o jogador quando esta
 ## dentro do alcance, ataca quando esta perto, reage a dano e morre.
-## Aparencia (imagem/nome) e definida em runtime pela LevelManager de
-## acordo com o personagem escolhido (CharacterData.enemy_texture),
-## sem duplicar codigo por heroi.
+## Aparencia (SpriteFrames/imagem/nome) e definida em runtime pela
+## LevelManager de acordo com o personagem escolhido
+## (CharacterData.enemy_frames / enemy_texture), sem duplicar codigo por heroi.
 
 signal died
 
@@ -24,11 +24,14 @@ signal died
 var depth_min: float = -1000.0
 var depth_max: float = 1000.0
 
+var frames: SpriteFrames
+var _sprite_base_scale: Vector2 = Vector2.ONE
+
 @onready var health: Health = $Health
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var hitbox: Hitbox = $Visuals/AttackPivot/Hitbox
 @onready var visuals: Node2D = $Visuals
-@onready var sprite: Sprite2D = $Visuals/Sprite
+@onready var sprite: AnimatedSprite2D = $Visuals/Sprite
 @onready var shadow: Sprite2D = $Shadow
 
 const SpriteUtil := preload("res://scripts/sprite_util.gd")
@@ -50,10 +53,11 @@ func _ready() -> void:
 	call_deferred("_find_target")
 
 func _refresh_visuals() -> void:
-	SpriteUtil.fit(sprite, texture, sprite_height)
+	_sprite_base_scale = SpriteUtil.apply(sprite, frames, texture, sprite_height)
 
-func configure(new_name: String, new_texture: Texture2D, new_height: float) -> void:
+func configure(new_name: String, new_frames: SpriteFrames, new_texture: Texture2D, new_height: float) -> void:
 	enemy_name = new_name
+	frames = new_frames
 	if new_texture:
 		texture = new_texture
 	sprite_height = new_height
@@ -130,15 +134,15 @@ func _on_hit_received(_amount: float, _knockback_x: float) -> void:
 func _on_died() -> void:
 	state = State.DEAD
 	set_physics_process(false)
-	
-	# Desativa as áreas do inimigo para evitar novas colisões
+
+	# Desativa as areas do inimigo para evitar novas colisoes
 	if hurtbox:
 		hurtbox.set_deferred("monitoring", false)
 		hurtbox.set_deferred("monitorable", false)
-	
-	# Chama o drop diferido para não instanciar o health pack no meio da consulta do Physics Server
+
+	# Chama o drop diferido para nao instanciar o health pack no meio da consulta do Physics Server
 	call_deferred("_try_drop_health_pack")
-	
+
 	died.emit()
 	var tw := create_tween()
 	tw.tween_property(self, "modulate:a", 0.0, 0.4)

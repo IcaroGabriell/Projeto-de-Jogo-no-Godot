@@ -13,7 +13,7 @@ var depth_max: float = 1000.0
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var hitbox: Hitbox = $Visuals/AttackPivot/Hitbox
 @onready var visuals: Node2D = $Visuals
-@onready var sprite: Sprite2D = $Visuals/Sprite
+@onready var sprite: AnimatedSprite2D = $Visuals/Sprite
 @onready var weapon_sprite: Sprite2D = $Visuals/AttackPivot/WeaponFlash
 @onready var shadow: Sprite2D = $Shadow
 @onready var name_label: Label = $NameLabel
@@ -61,7 +61,11 @@ func _ready() -> void:
 
 func apply_character_data() -> void:
 	health.setup(character_data.max_health)
-	_sprite_base_scale = SpriteUtil.fit(sprite, character_data.texture, character_data.sprite_height)
+	_sprite_base_scale = SpriteUtil.apply(
+		sprite,
+		character_data.player_frames,
+		character_data.texture,
+		character_data.sprite_height)
 	weapon_sprite.modulate = character_data.accent_color
 	name_label.text = character_data.character_name
 	_update_name_position()
