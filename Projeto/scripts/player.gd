@@ -1,11 +1,19 @@
 extends CharacterBody2D
 class_name Player
 
+## Controlador do jogador.
+## Movimento em X (esquerda/direita) e Y (profundidade, simulando o
+## eixo "para dentro da tela"). A ordenacao visual (quem desenha na
+## frente de quem) e feita via z_index baseado na posicao Y atual,
+## entao quanto mais "para baixo/perto da camera" o personagem estiver,
+## mais na frente ele e desenhado.
+
 signal health_updated(current: float, max_health: float)
 signal died
 
 @export var character_data: CharacterData
 
+# Limites do corredor de profundidade (eixo Y). Configurados pela LevelManager.
 var depth_min: float = -1000.0
 var depth_max: float = 1000.0
 
@@ -13,14 +21,15 @@ var depth_max: float = 1000.0
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var hitbox: Hitbox = $Visuals/AttackPivot/Hitbox
 @onready var visuals: Node2D = $Visuals
+@onready var body_polygon: Polygon2D = $Visuals/Body
+@onready var head_polygon: Polygon2D = $Visuals/Head
+@onready var weapon_polygon: Polygon2D = $Visuals/AttackPivot/WeaponFlash
+@onready var shadow: Polygon2D = $Shadow
 @onready var sprite: AnimatedSprite2D = $Visuals/Sprite
-@onready var weapon_sprite: Sprite2D = $Visuals/AttackPivot/WeaponFlash
-@onready var shadow: Sprite2D = $Shadow
 @onready var name_label: Label = $NameLabel
 
-const SpriteUtil := preload("res://scripts/sprite_util.gd")
 const PROJECTILE_SCENE := preload("res://scenes/projectile.tscn")
-const ENEMY_HURTBOX_LAYER_BIT := 16
+const ENEMY_HURTBOX_LAYER_BIT := 16 # camada 5 (EnemyHurtbox)
 
 enum State { IDLE, WALK, JUMP, ATTACK, HURT, DEAD }
 var state: State = State.IDLE
@@ -35,6 +44,8 @@ var attack_timer: float = 0.0
 var ranged_cooldown_timer: float = 0.0
 var ranged_cooldown: float = 0.6
 
+var ranged_anim_timer: float = 0.0
+
 var hurt_timer: float = 0.0
 var hurt_duration: float = 0.3
 
@@ -44,31 +55,57 @@ var gravity: float = 1500.0
 var jump_force: float = 480.0
 var is_jumping: bool = false
 
-var _sprite_base_scale: Vector2 = Vector2.ONE
-var _shadow_base_scale: Vector2 = Vector2.ONE
-var _anim_scale: Vector2 = Vector2.ONE
+# Verdadeiro quando o heroi usa sprites animados (ex.: Kai) em vez dos poligonos.
+var uses_sprite: bool = false
 
 func _ready() -> void:
 	add_to_group("player")
-	_shadow_base_scale = shadow.scale
-	_sprite_base_scale = SpriteUtil.fit(sprite, null, 0.0)
 	if character_data:
 		apply_character_data()
+	_setup_sprite()
 	health.died.connect(_on_died)
 	health.health_changed.connect(func(c, m): health_updated.emit(c, m))
 	hurtbox.hit_received.connect(_on_hit_received)
-	weapon_sprite.visible = false
+	weapon_polygon.visible = false
 
 func apply_character_data() -> void:
 	health.setup(character_data.max_health)
-	_sprite_base_scale = SpriteUtil.apply(
-		sprite,
-		character_data.player_frames,
-		character_data.texture,
-		character_data.sprite_height)
-	weapon_sprite.modulate = character_data.accent_color
+	body_polygon.color = character_data.body_color
+	head_polygon.color = character_data.head_color
+	weapon_polygon.color = character_data.accent_color
 	name_label.text = character_data.character_name
-	_update_name_position()
+
+func _setup_sprite() -> void:
+	uses_sprite = false
+	sprite.visible = false
+	if character_data == null or not character_data.has_sprites():
+		return
+	var frames: SpriteFrames = character_data.build_sprite_frames()
+	if frames == null:
+		return
+	sprite.sprite_frames = frames
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	sprite.centered = true
+	sprite.offset = character_data.sprite_offset
+	sprite.scale = Vector2.ONE * character_data.sprite_scale
+	sprite.visible = true
+	body_polygon.visible = false
+	head_polygon.visible = false
+	uses_sprite = true
+	# Hurtbox mais alta para acompanhar o tamanho do sprite.
+	var hurt_shape := hurtbox.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if hurt_shape and hurt_shape.shape is RectangleShape2D:
+		var rect := (hurt_shape.shape as RectangleShape2D).duplicate() as RectangleShape2D
+		rect.size = Vector2(30, 62)
+		hurt_shape.shape = rect
+		hurt_shape.position = Vector2(0, -31)
+	# Sombra um pouco maior, combinando com a base larga do personagem.
+	var wide := PackedVector2Array()
+	for pt in shadow.polygon:
+		wide.append(Vector2(pt.x * 1.4, pt.y * 1.2))
+	shadow.polygon = wide
+	if frames.has_animation("idle"):
+		sprite.play("idle")
 
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
@@ -89,11 +126,13 @@ func _tick_timers(delta: float) -> void:
 		attack_cooldown_timer -= delta
 	if ranged_cooldown_timer > 0.0:
 		ranged_cooldown_timer -= delta
+	if ranged_anim_timer > 0.0:
+		ranged_anim_timer -= delta
 	if state == State.ATTACK:
 		attack_timer -= delta
 		if attack_timer <= 0.0:
 			hitbox.deactivate()
-			weapon_sprite.visible = false
+			weapon_polygon.visible = false
 			state = State.IDLE
 	if state == State.HURT:
 		hurt_timer -= delta
@@ -117,7 +156,7 @@ func _handle_input(_delta: float) -> void:
 		visuals.scale.x = facing * s
 
 	if state == State.ATTACK:
-		velocity *= 0.2
+		velocity *= 0.2 # levemente reduz movimento durante ataque
 
 	if Input.is_action_just_pressed("jump") and not is_jumping:
 		is_jumping = true
@@ -147,19 +186,14 @@ func _apply_jump(delta: float) -> void:
 			if state == State.JUMP:
 				state = State.IDLE
 	visuals.position.y = -jump_height
-	_update_name_position()
-	shadow.scale = _shadow_base_scale * clamp(1.0 - jump_height / 260.0, 0.45, 1.0)
+	shadow.scale = Vector2.ONE * clamp(1.0 - jump_height / 260.0, 0.45, 1.0)
 	shadow.modulate.a = clamp(1.0 - jump_height / 260.0, 0.25, 0.55)
-
-func _update_name_position() -> void:
-	var base_height: float = character_data.sprite_height if character_data else 52.0
-	name_label.position.y = -base_height - 14.0 - jump_height
 
 func _clamp_depth() -> void:
 	position.y = clamp(position.y, depth_min, depth_max)
 
 func _update_visual_order() -> void:
-	z_index = int(position.y)
+	z_index = int(position.y) + 1000 # sempre acima do cenario (z 0), mesmo com Y negativo
 
 func _start_attack() -> void:
 	state = State.ATTACK
@@ -167,12 +201,19 @@ func _start_attack() -> void:
 	attack_cooldown_timer = attack_cooldown
 	var dmg: float = character_data.melee_damage if character_data else 12.0
 	hitbox.activate(dmg)
-	weapon_sprite.visible = true
+	var base_x: float = abs(hitbox.position.x)
+	hitbox.position.x = base_x * facing
+	weapon_polygon.visible = not uses_sprite
+	weapon_polygon.position.x = abs(weapon_polygon.position.x) * facing
+	_play_sprite_once(_anim_or("kick", "punch"))
 
 func _fire_projectile() -> void:
 	if not get_parent():
 		return
 	ranged_cooldown_timer = ranged_cooldown
+	if uses_sprite and state != State.ATTACK:
+		ranged_anim_timer = 0.3
+		_play_sprite_once(_anim_or("throw", "punch"))
 	var proj = PROJECTILE_SCENE.instantiate()
 	get_parent().add_child(proj)
 	proj.global_position = global_position + Vector2(20.0 * facing, -jump_height - 26.0)
@@ -191,19 +232,55 @@ func _on_hit_received(_amount: float, _knockback_x: float) -> void:
 func _on_died() -> void:
 	state = State.DEAD
 	velocity = Vector2.ZERO
+	if uses_sprite and sprite.sprite_frames.has_animation("hurt"):
+		sprite.play("hurt")
 	var tw := create_tween()
 	tw.tween_property(visuals, "modulate:a", 0.0, 0.6)
 	tw.parallel().tween_property(visuals, "rotation", deg_to_rad(80.0) * facing, 0.6)
 	died.emit()
 
-func _update_animation(delta: float) -> void:
+## Usa a animacao preferida se o heroi tiver (ex.: Maya: kick/throw); senao, o fallback (punch).
+func _anim_or(preferred: String, fallback: String) -> String:
+	if uses_sprite and sprite.sprite_frames.has_animation(preferred):
+		return preferred
+	return fallback
+
+func _play_sprite_once(anim: String) -> void:
+	if not uses_sprite or not sprite.sprite_frames.has_animation(anim):
+		return
+	sprite.stop()
+	sprite.animation = anim
+	sprite.frame = 0
+	sprite.play(anim)
+
+func _update_sprite_animation() -> void:
+	if not uses_sprite:
+		return
+	var wanted := "idle"
 	match state:
 		State.WALK:
-			_anim_scale.y = 1.0 + sin(Time.get_ticks_msec() * 0.018) * 0.05
+			wanted = "walk"
 		State.ATTACK:
-			_anim_scale.x = lerp(_anim_scale.x, 1.18, 20.0 * delta)
+			wanted = _anim_or("kick", "punch")
+		State.JUMP:
+			wanted = "jump"
+		State.HURT, State.DEAD:
+			wanted = "hurt"
+	if ranged_anim_timer > 0.0 and (state == State.IDLE or state == State.WALK):
+		wanted = _anim_or("throw", "punch")
+	if sprite.sprite_frames.has_animation(wanted) and sprite.animation != wanted:
+		sprite.play(wanted)
+
+func _update_animation(delta: float) -> void:
+	if uses_sprite:
+		_update_sprite_animation()
+		return
+	match state:
+		State.WALK:
+			body_polygon.scale.y = 1.0 + sin(Time.get_ticks_msec() * 0.018) * 0.05
+		State.ATTACK:
+			body_polygon.scale.x = lerp(body_polygon.scale.x, 1.18, 20.0 * delta)
 		_:
-			_anim_scale.y = lerp(_anim_scale.y, 1.0, 8.0 * delta)
+			body_polygon.scale.y = lerp(body_polygon.scale.y, 1.0, 8.0 * delta)
 	if state != State.ATTACK:
-		_anim_scale.x = lerp(_anim_scale.x, 1.0, 8.0 * delta)
-	sprite.scale = _sprite_base_scale * _anim_scale
+		body_polygon.scale.x = lerp(body_polygon.scale.x, 1.0, 8.0 * delta)
