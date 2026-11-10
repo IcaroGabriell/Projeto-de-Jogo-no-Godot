@@ -3,15 +3,14 @@ class_name Enemy
 
 ## Inimigo comum com IA simples: persegue o jogador quando esta
 ## dentro do alcance, ataca quando esta perto, reage a dano e morre.
-## Aparencia (SpriteFrames/imagem/nome) e definida em runtime pela
-## LevelManager de acordo com o personagem escolhido
-## (CharacterData.enemy_frames / enemy_texture), sem duplicar codigo por heroi.
+## Aparencia (cor/nome) e definida em runtime pela LevelManager de
+## acordo com o personagem escolhido, sem duplicar codigo por heroi.
 
 signal died
 
 @export var enemy_name: String = "Capanga"
-@export var texture: Texture2D
-@export var sprite_height: float = 46.0
+@export var body_color: Color = Color(0.25, 0.3, 0.55)
+@export var head_color: Color = Color(0.5, 0.55, 0.75)
 @export var max_health: float = 40.0
 @export var move_speed: float = 110.0
 @export var damage: float = 8.0
@@ -24,17 +23,14 @@ signal died
 var depth_min: float = -1000.0
 var depth_max: float = 1000.0
 
-var frames: SpriteFrames
-var _sprite_base_scale: Vector2 = Vector2.ONE
-
 @onready var health: Health = $Health
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var hitbox: Hitbox = $Visuals/AttackPivot/Hitbox
 @onready var visuals: Node2D = $Visuals
+@onready var body_polygon: Polygon2D = $Visuals/Body
+@onready var head_polygon: Polygon2D = $Visuals/Head
+@onready var shadow: Polygon2D = $Shadow
 @onready var sprite: AnimatedSprite2D = $Visuals/Sprite
-@onready var shadow: Sprite2D = $Shadow
-
-const SpriteUtil := preload("res://scripts/sprite_util.gd")
 
 enum State { IDLE, CHASE, ATTACK, HURT, DEAD }
 var state: State = State.IDLE
@@ -43,6 +39,9 @@ var attack_timer: float = 0.0
 var attack_active_timer: float = 0.0
 var hurt_timer: float = 0.0
 var target: Node2D
+
+# Verdadeiro quando o capanga usa sprites animados em vez dos poligonos.
+var uses_sprite: bool = false
 
 func _ready() -> void:
 	add_to_group("enemy")
@@ -53,16 +52,69 @@ func _ready() -> void:
 	call_deferred("_find_target")
 
 func _refresh_visuals() -> void:
-	_sprite_base_scale = SpriteUtil.apply(sprite, frames, texture, sprite_height)
+	body_polygon.color = body_color
+	head_polygon.color = head_color
 
-func configure(new_name: String, new_frames: SpriteFrames, new_texture: Texture2D, new_height: float) -> void:
+func configure(new_name: String, new_body_color: Color, new_head_color: Color) -> void:
 	enemy_name = new_name
-	frames = new_frames
-	if new_texture:
-		texture = new_texture
-	sprite_height = new_height
+	body_color = new_body_color
+	head_color = new_head_color
 	if is_inside_tree():
 		_refresh_visuals()
+
+## Aplica um conjunto de sprites (um capanga sorteado). Veja CharacterData.enemy_sprite_sets.
+func configure_sprites(sprite_set: Dictionary, frame_size: Vector2i) -> void:
+	var frames: SpriteFrames = CharacterData.make_sprite_frames(sprite_set.get("animations", {}), frame_size)
+	if frames == null:
+		return
+	enemy_name = str(sprite_set.get("name", enemy_name))
+	var sc: float = float(sprite_set.get("scale", 0.45))
+	sprite.sprite_frames = frames
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	sprite.centered = true
+	sprite.offset = sprite_set.get("offset", Vector2(0, -69))
+	sprite.scale = Vector2.ONE * sc
+	sprite.visible = true
+	body_polygon.visible = false
+	head_polygon.visible = false
+	uses_sprite = true
+	# Hurtbox acompanha a altura do sprite (conteudo do quadro: ~136 px).
+	var h: float = 136.0 * sc
+	var hurt_shape := hurtbox.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if hurt_shape and hurt_shape.shape is RectangleShape2D:
+		var rect := (hurt_shape.shape as RectangleShape2D).duplicate() as RectangleShape2D
+		rect.size = Vector2(30, h)
+		hurt_shape.shape = rect
+		hurt_shape.position = Vector2(0, -h * 0.5)
+	# Sombra um pouco maior, combinando com a base larga do personagem.
+	var wide := PackedVector2Array()
+	for pt in shadow.polygon:
+		wide.append(Vector2(pt.x * 1.4, pt.y * 1.2))
+	shadow.polygon = wide
+	if frames.has_animation("idle"):
+		sprite.play("idle")
+
+func _play_sprite_once(anim: String) -> void:
+	if not uses_sprite or not sprite.sprite_frames.has_animation(anim):
+		return
+	sprite.stop()
+	sprite.animation = anim
+	sprite.frame = 0
+	sprite.play(anim)
+
+func _update_sprite_animation() -> void:
+	if not uses_sprite:
+		return
+	var wanted := "idle"
+	match state:
+		State.CHASE:
+			wanted = "walk" if velocity.length() > 1.0 else "idle"
+		State.ATTACK:
+			wanted = "punch"
+		State.HURT, State.DEAD:
+			wanted = "hurt"
+	if sprite.sprite_frames.has_animation(wanted) and sprite.animation != wanted:
+		sprite.play(wanted)
 
 func _find_target() -> void:
 	var players := get_tree().get_nodes_in_group("player")
@@ -109,18 +161,21 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	position.y = clamp(position.y, depth_min, depth_max)
-	z_index = int(position.y)
+	# +1000: mantem sempre positivo, acima do cenario (z 0), mesmo com Y negativo
+	z_index = int(position.y) + 1000
+	_update_sprite_animation()
 
 func _start_attack() -> void:
 	state = State.ATTACK
 	attack_timer = attack_cooldown
 	attack_active_timer = 0.3
+	_play_sprite_once("punch")
 	hitbox.activate(damage)
 	var dir: float = sign(target.global_position.x - global_position.x)
 	if dir == 0.0:
 		dir = 1.0
-	# Vira o sprite (e a Hitbox, que fica dentro de Visuals) para o jogador.
-	visuals.scale.x = dir * abs(visuals.scale.x)
+	var base_x: float = abs(hitbox.position.x)
+	hitbox.position.x = base_x * dir
 
 func _on_hit_received(_amount: float, _knockback_x: float) -> void:
 	if state == State.DEAD:
@@ -134,15 +189,9 @@ func _on_hit_received(_amount: float, _knockback_x: float) -> void:
 func _on_died() -> void:
 	state = State.DEAD
 	set_physics_process(false)
-
-	# Desativa as areas do inimigo para evitar novas colisoes
-	if hurtbox:
-		hurtbox.set_deferred("monitoring", false)
-		hurtbox.set_deferred("monitorable", false)
-
-	# Chama o drop diferido para nao instanciar o health pack no meio da consulta do Physics Server
-	call_deferred("_try_drop_health_pack")
-
+	if uses_sprite and sprite.sprite_frames.has_animation("hurt"):
+		sprite.play("hurt")
+	_try_drop_health_pack()
 	died.emit()
 	var tw := create_tween()
 	tw.tween_property(self, "modulate:a", 0.0, 0.4)
@@ -152,5 +201,7 @@ func _on_died() -> void:
 func _try_drop_health_pack() -> void:
 	if health_pack_scene and randf() <= drop_chance and get_parent():
 		var pack = health_pack_scene.instantiate()
-		pack.global_position = global_position
+		var drop_pos := global_position
+		# adiciona depois da fase de fisica (evita erro "flushing queries")
 		get_parent().add_child.call_deferred(pack)
+		pack.set_deferred("global_position", drop_pos)

@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/level_manager.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/exit_zone.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="5"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bg_level2.png" id="6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(1920, 24)
@@ -26,12 +25,34 @@ camera_limit_top = -330
 camera_limit_bottom = 430
 
 [node name="Background" type="Node2D" parent="."]
-z_index = -4000
 
-[node name="Backdrop" type="Sprite2D" parent="Background"]
-position = Vector2(-200, -270)
-texture = ExtResource("6")
-centered = false
+[node name="SkyStrip" type="Polygon2D" parent="Background"]
+color = Color(0.05, 0.07, 0.14, 1)
+polygon = PackedVector2Array(-200, -270, 1950, -270, 1950, -150, -200, -180)
+
+[node name="Building1" type="Polygon2D" parent="Background"]
+color = Color(0.08, 0.1, 0.2, 1)
+polygon = PackedVector2Array(120, -240, 340, -240, 340, -150, 120, -156)
+
+[node name="Building2" type="Polygon2D" parent="Background"]
+color = Color(0.1, 0.14, 0.26, 1)
+polygon = PackedVector2Array(520, -250, 700, -250, 700, -150, 520, -154)
+
+[node name="Building3" type="Polygon2D" parent="Background"]
+color = Color(0.08, 0.1, 0.2, 1)
+polygon = PackedVector2Array(1050, -240, 1280, -240, 1280, -150, 1050, -156)
+
+[node name="Building4" type="Polygon2D" parent="Background"]
+color = Color(0.1, 0.14, 0.26, 1)
+polygon = PackedVector2Array(1550, -250, 1800, -250, 1800, -150, 1550, -154)
+
+[node name="Ground" type="Polygon2D" parent="Background"]
+color = Color(0.14, 0.16, 0.24, 1)
+polygon = PackedVector2Array(-200, -150, 1950, -110, 1950, 230, -200, 200)
+
+[node name="GroundStripe" type="Polygon2D" parent="Background"]
+color = Color(0.25, 0.55, 0.9, 0.4)
+polygon = PackedVector2Array(-200, 20, 1950, 42, 1950, 58, -200, 38)
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(90, 0)

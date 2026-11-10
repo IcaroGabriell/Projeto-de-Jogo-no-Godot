@@ -1,25 +1,22 @@
-[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://tai7bs2xegx5"]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3]
 
-[ext_resource type="Script" uid="uid://cg5bjudnc4yse" path="res://scripts/character_data.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://cmwhtaorkc3d1" path="res://assets/sprites/enemy_diesel.png" id="3"]
-[ext_resource type="Texture2D" uid="uid://dwxhsvuab0er3" path="res://assets/sprites/boss_diesel.png" id="4"]
-[ext_resource type="Texture2D" uid="uid://c40u2bwucs3q7" path="res://assets/sprites/c2c23e17-7488-44d5-950f-7dacae31a0be-removebg-preview.png" id="4_h20hi"]
+[ext_resource type="Script" path="res://scripts/character_data.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-character_name = "Rato Pelado"
-description = "Pelado com a mão no bolso"
+character_name = "Diesel"
+description = "Lento porem muito forte, ideal para quem gosta de tanque."
+body_color = Color(0.25, 0.55, 0.2, 1)
+head_color = Color(0.85, 0.65, 0.5, 1)
 accent_color = Color(0.8, 1, 0.6, 1)
-texture = ExtResource("4_h20hi")
-sprite_height = 100.0
 max_health = 130.0
 move_speed = 195.0
 melee_damage = 16.0
 projectile_damage = 9.0
 enemy_name = "Bloco de Concreto"
-enemy_texture = ExtResource("3")
-enemy_sprite_height = 90.0
+enemy_body_color = Color(0.35, 0.45, 0.3, 1)
+enemy_head_color = Color(0.6, 0.65, 0.55, 1)
 boss_name = "Motor, o Demolidor"
-boss_texture = ExtResource("4")
-boss_sprite_height = 190.0
+boss_body_color = Color(0.2, 0.4, 0.15, 1)
+boss_head_color = Color(0.45, 0.6, 0.3, 1)
 boss_max_health = 340.0

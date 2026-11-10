@@ -77,7 +77,11 @@ func _setup_enemies() -> void:
 			enemy.depth_min = depth_min
 			enemy.depth_max = depth_max
 			if data:
-				enemy.configure(data.enemy_name, data.enemy_frames, data.enemy_texture, data.enemy_sprite_height)
+				enemy.configure(data.enemy_name, data.enemy_body_color, data.enemy_head_color)
+				# Sorteia o capanga (sprite) desta vaga, quando o heroi tem capangas com sprite.
+				var henchman: Dictionary = GameManager.draw_henchman(data)
+				if not henchman.is_empty():
+					enemy.configure_sprites(henchman, data.enemy_sprite_frame_size)
 			enemy.health_pack_scene = HEALTH_PACK_SCENE
 			enemy.died.connect(_on_enemy_died)
 	hud.update_enemy_count(enemies_remaining)
@@ -92,7 +96,9 @@ func _setup_boss() -> void:
 	boss.depth_min = depth_min
 	boss.depth_max = depth_max
 	if data:
-		boss.configure(data.boss_name, data.boss_frames, data.boss_texture, data.boss_sprite_height, data.boss_max_health)
+		boss.configure(data.boss_name, data.boss_body_color, data.boss_head_color, data.boss_max_health)
+		if not data.boss_sprite.is_empty():
+			boss.configure_sprites(data.boss_sprite, data.boss_sprite_frame_size)
 	boss.died.connect(_on_boss_died)
 	hud.setup_boss(boss)
 
@@ -103,16 +109,14 @@ func _on_enemy_died(_enemy: Node = null) -> void:
 		_open_exit()
 
 func _open_exit() -> void:
-	# Alterado para set_deferred para evitar erro ao liberar a saída durante a morte do último inimigo
-	exit_zone.set_deferred("monitoring", true)
-	exit_zone.set_deferred("monitorable", true)
+	exit_zone.monitoring = true
+	exit_zone.monitorable = true
 	hud.show_message("Caminho liberado! Siga em frente.")
 
 func _on_exit_reached() -> void:
 	if next_level_path == "":
 		return
-	# Alterado para set_deferred ao desativar no momento em que o jogador entra na área
-	exit_zone.set_deferred("monitoring", false)
+	exit_zone.monitoring = false
 	TransitionManager.change_scene(next_level_path)
 
 func _on_boss_died() -> void:

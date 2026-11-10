@@ -1,78 +1,105 @@
-[gd_scene format=3 uid="uid://1hfore1bdhhk"]
+[gd_scene load_steps=8 format=3]
 
-[ext_resource type="Script" uid="uid://oyouknrdvtxu" path="res://scripts/level_manager.gd" id="1"]
-[ext_resource type="Script" uid="uid://c8phemvla836l" path="res://scripts/exit_zone.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/level_manager.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/exit_zone.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="5"]
-[ext_resource type="Texture2D" uid="uid://bn5qbrjli7c4v" path="res://assets/sprites/bg_level1.png" id="6"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_side"]
-size = Vector2(24, 260)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(1720, 24)
 
-[node name="Level1" type="Node2D" unique_id=1854528328]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_side"]
+size = Vector2(24, 260)
+
+[node name="Level1" type="Node2D"]
 script = ExtResource("1")
 level_display_name = "Cena 1 - Setor Industrial"
+is_boss_level = false
 next_level_path = "res://scenes/level_2.tscn"
+depth_min = -70.0
+depth_max = 70.0
 camera_limit_left = -150
 camera_limit_right = 1750
 camera_limit_top = -320
 camera_limit_bottom = 420
 
-[node name="Background" type="Node2D" parent="." unique_id=1969287226]
-z_index = -4000
+[node name="Background" type="Node2D" parent="."]
 
-[node name="Backdrop" type="Sprite2D" parent="Background" unique_id=496724370]
-position = Vector2(-200, -260)
-texture = ExtResource("6")
-centered = false
+[node name="SkyStrip" type="Polygon2D" parent="Background"]
+color = Color(0.16, 0.09, 0.1, 1)
+polygon = PackedVector2Array(-200, -260, 1750, -260, 1750, -140, -200, -170)
 
-[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1566797560]
+[node name="Building1" type="Polygon2D" parent="Background"]
+color = Color(0.22, 0.11, 0.11, 1)
+polygon = PackedVector2Array(60, -230, 220, -230, 220, -140, 60, -145)
+
+[node name="Building2" type="Polygon2D" parent="Background"]
+color = Color(0.26, 0.13, 0.1, 1)
+polygon = PackedVector2Array(420, -220, 620, -220, 620, -140, 420, -144)
+
+[node name="Building3" type="Polygon2D" parent="Background"]
+color = Color(0.22, 0.11, 0.11, 1)
+polygon = PackedVector2Array(900, -230, 1120, -230, 1120, -140, 900, -146)
+
+[node name="Building4" type="Polygon2D" parent="Background"]
+color = Color(0.26, 0.13, 0.1, 1)
+polygon = PackedVector2Array(1350, -220, 1600, -220, 1600, -140, 1350, -144)
+
+[node name="Ground" type="Polygon2D" parent="Background"]
+color = Color(0.32, 0.22, 0.18, 1)
+polygon = PackedVector2Array(-200, -140, 1750, -100, 1750, 220, -200, 190)
+
+[node name="GroundStripe" type="Polygon2D" parent="Background"]
+color = Color(0.85, 0.35, 0.15, 0.45)
+polygon = PackedVector2Array(-200, 20, 1750, 40, 1750, 56, -200, 36)
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(90, 0)
 
-[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1867759699]
+[node name="LeftWall" type="StaticBody2D" parent="."]
+collision_layer = 1
 position = Vector2(-30, 0)
 
-[node name="Shape" type="CollisionShape2D" parent="LeftWall" unique_id=591143941]
+[node name="Shape" type="CollisionShape2D" parent="LeftWall"]
 shape = SubResource("RectangleShape2D_side")
 
-[node name="TopWall" type="StaticBody2D" parent="." unique_id=1495442093]
+[node name="TopWall" type="StaticBody2D" parent="."]
+collision_layer = 1
 position = Vector2(760, -100)
 
-[node name="Shape" type="CollisionShape2D" parent="TopWall" unique_id=1058570995]
+[node name="Shape" type="CollisionShape2D" parent="TopWall"]
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="BottomWall" type="StaticBody2D" parent="." unique_id=584602812]
+[node name="BottomWall" type="StaticBody2D" parent="."]
+collision_layer = 1
 position = Vector2(760, 100)
 
-[node name="Shape" type="CollisionShape2D" parent="BottomWall" unique_id=813251088]
+[node name="Shape" type="CollisionShape2D" parent="BottomWall"]
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="Entities" type="Node2D" parent="." unique_id=944219036]
+[node name="Entities" type="Node2D" parent="."]
 
-[node name="Enemies" type="Node2D" parent="Entities" unique_id=151617684]
+[node name="Enemies" type="Node2D" parent="Entities"]
 
-[node name="Enemy1" parent="Entities/Enemies" unique_id=890768973 instance=ExtResource("3")]
+[node name="Enemy1" parent="Entities/Enemies" instance=ExtResource("3")]
 position = Vector2(520, -30)
 
-[node name="Enemy2" parent="Entities/Enemies" unique_id=467762810 instance=ExtResource("3")]
+[node name="Enemy2" parent="Entities/Enemies" instance=ExtResource("3")]
 position = Vector2(760, 25)
 
-[node name="Enemy3" parent="Entities/Enemies" unique_id=931484952 instance=ExtResource("3")]
+[node name="Enemy3" parent="Entities/Enemies" instance=ExtResource("3")]
 position = Vector2(1010, -10)
 
-[node name="ExitZone" type="Area2D" parent="." unique_id=277372083]
+[node name="ExitZone" type="Area2D" parent="."]
 position = Vector2(1650, 0)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("2")
 
-[node name="Shape" type="CollisionShape2D" parent="ExitZone" unique_id=254291480]
+[node name="Shape" type="CollisionShape2D" parent="ExitZone"]
 shape = SubResource("RectangleShape2D_side")
 
-[node name="HUD" parent="." unique_id=354327114 instance=ExtResource("4")]
+[node name="HUD" parent="." instance=ExtResource("4")]
 
-[node name="PauseMenu" parent="." unique_id=1812594626 instance=ExtResource("5")]
+[node name="PauseMenu" parent="." instance=ExtResource("5")]

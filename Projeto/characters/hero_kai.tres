@@ -1,24 +1,221 @@
-[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://o2he20d6kwhb"]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3]
 
-[ext_resource type="Script" uid="uid://cg5bjudnc4yse" path="res://scripts/character_data.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://digq8bk12s06x" path="res://assets/sprites/enemy_kai.png" id="3"]
-[ext_resource type="Texture2D" uid="uid://bvdvvdnpyik3p" path="res://assets/sprites/boss_kai.png" id="4"]
-[ext_resource type="Texture2D" uid="uid://d03hqarqf6m6e" path="res://assets/sprites/8840daf4-f8a7-4414-9f6b-44b0e590364a-removebg-preview.png" id="4_r5uny"]
+[ext_resource type="Script" path="res://scripts/character_data.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-character_name = "Pantera Negra"
-description = "Bom de briga e bom de farra"
+character_name = "Kai"
+description = "Pantera faixa-preta. Rapido e agressivo, especialista em golpes curtos."
+body_color = Color(0.85, 0.18, 0.18, 1)
+head_color = Color(0.93, 0.76, 0.55, 1)
 accent_color = Color(1, 0.85, 0.2, 1)
-texture = ExtResource("4_r5uny")
-sprite_height = 120.0
+max_health = 100.0
 move_speed = 240.0
 melee_damage = 11.0
 projectile_damage = 7.0
 enemy_name = "Punho de Ferro"
-enemy_texture = ExtResource("3")
-enemy_sprite_height = 90.0
+enemy_body_color = Color(0.55, 0.16, 0.16, 1)
+enemy_head_color = Color(0.8, 0.6, 0.5, 1)
 boss_name = "Brasa, o Incendiario"
-boss_texture = ExtResource("4")
-boss_sprite_height = 190.0
+boss_body_color = Color(0.8, 0.25, 0.05, 1)
+boss_head_color = Color(0.95, 0.5, 0.2, 1)
 boss_max_health = 280.0
+portrait_path = "res://assets/kai/kai_portrait.png"
+sprite_frame_size = Vector2i(168, 168)
+sprite_scale = 0.45
+sprite_offset = Vector2(12, -69)
+sprite_animations = {
+"hurt": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/kai/kai_hurt.png"
+},
+"idle": {
+"fps": 6.0,
+"frames": 4,
+"loop": true,
+"path": "res://assets/kai/kai_idle.png"
+},
+"jump": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/kai/kai_jump.png"
+},
+"punch": {
+"fps": 22.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/kai/kai_punch.png"
+},
+"walk": {
+"fps": 10.0,
+"frames": 6,
+"loop": true,
+"path": "res://assets/kai/kai_walk.png"
+}
+}
+enemy_sprite_frame_size = Vector2i(168, 168)
+enemy_sprite_sets = [{
+"name": "Jacare",
+"scale": 0.45,
+"offset": Vector2(0, -69.3),
+"animations": {
+"hurt": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/enemies/jacare/jacare_hurt.png"
+},
+"idle": {
+"fps": 6.0,
+"frames": 4,
+"loop": true,
+"path": "res://assets/enemies/jacare/jacare_idle.png"
+},
+"punch": {
+"fps": 20.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/enemies/jacare/jacare_punch.png"
+},
+"walk": {
+"fps": 9.0,
+"frames": 6,
+"loop": true,
+"path": "res://assets/enemies/jacare/jacare_walk.png"
+}
+}
+},
+{
+"name": "Buldogue",
+"scale": 0.46,
+"offset": Vector2(0, -69.5),
+"animations": {
+"hurt": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/enemies/buldogue/buldogue_hurt.png"
+},
+"idle": {
+"fps": 6.0,
+"frames": 4,
+"loop": true,
+"path": "res://assets/enemies/buldogue/buldogue_idle.png"
+},
+"punch": {
+"fps": 20.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/enemies/buldogue/buldogue_punch.png"
+},
+"walk": {
+"fps": 9.0,
+"frames": 6,
+"loop": true,
+"path": "res://assets/enemies/buldogue/buldogue_walk.png"
+}
+}
+},
+{
+"name": "Elefante",
+"scale": 0.5,
+"offset": Vector2(0, -70.0),
+"animations": {
+"hurt": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/enemies/elefante/elefante_hurt.png"
+},
+"idle": {
+"fps": 6.0,
+"frames": 4,
+"loop": true,
+"path": "res://assets/enemies/elefante/elefante_idle.png"
+},
+"punch": {
+"fps": 20.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/enemies/elefante/elefante_punch.png"
+},
+"walk": {
+"fps": 9.0,
+"frames": 6,
+"loop": true,
+"path": "res://assets/enemies/elefante/elefante_walk.png"
+}
+}
+},
+{
+"name": "Urso",
+"scale": 0.47,
+"offset": Vector2(0, -69.6),
+"animations": {
+"hurt": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/enemies/urso/urso_hurt.png"
+},
+"idle": {
+"fps": 6.0,
+"frames": 4,
+"loop": true,
+"path": "res://assets/enemies/urso/urso_idle.png"
+},
+"punch": {
+"fps": 20.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/enemies/urso/urso_punch.png"
+},
+"walk": {
+"fps": 9.0,
+"frames": 6,
+"loop": true,
+"path": "res://assets/enemies/urso/urso_walk.png"
+}
+}
+}]
+boss_sprite_frame_size = Vector2i(168, 168)
+boss_sprite = {
+"name": "Brasa, o Incendiario",
+"scale": 0.62,
+"offset": Vector2(0, -71.2),
+"animations": {
+"hurt": {
+"fps": 8.0,
+"frames": 1,
+"loop": true,
+"path": "res://assets/boss/pitbull/pitbull_hurt.png"
+},
+"idle": {
+"fps": 6.0,
+"frames": 4,
+"loop": true,
+"path": "res://assets/boss/pitbull/pitbull_idle.png"
+},
+"punch": {
+"fps": 20.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/boss/pitbull/pitbull_punch.png"
+},
+"throw": {
+"fps": 17.0,
+"frames": 6,
+"loop": false,
+"path": "res://assets/boss/pitbull/pitbull_throw.png"
+},
+"walk": {
+"fps": 9.0,
+"frames": 6,
+"loop": true,
+"path": "res://assets/boss/pitbull/pitbull_walk.png"
+}
+}
+}

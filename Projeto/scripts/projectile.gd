@@ -14,7 +14,8 @@ var direction: float = 1.0
 var life_timer: float = 0.0
 var impacted: bool = false
 
-@onready var sprite: Sprite2D = $Sprite
+@onready var body: Polygon2D = $Body
+@onready var glow: Polygon2D = $Glow
 
 func _ready() -> void:
 	monitoring = true
@@ -29,6 +30,7 @@ func setup(dir: float, dmg: float, target_layer_bit: int) -> void:
 	scale.x = direction
 
 func _process(delta: float) -> void:
+	z_index = int(position.y) + 1001
 	if impacted:
 		return
 	position.x += direction * speed * delta
@@ -46,10 +48,7 @@ func _on_area_entered(area: Area2D) -> void:
 
 func _impact() -> void:
 	impacted = true
-	# Usa set_deferred para desativar a monitorizacao em seguranca
-	# sem causar erro no Physics Server durante a colisao
 	set_deferred("monitoring", false)
-	
 	var tw := create_tween()
 	tw.tween_property(self, "scale", Vector2(1.8 * direction, 1.8), 0.12)
 	tw.parallel().tween_property(self, "modulate:a", 0.0, 0.12)

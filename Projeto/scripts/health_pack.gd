@@ -7,7 +7,9 @@ class_name HealthPack
 
 @export var heal_amount: float = 20.0
 
-@onready var visual: Sprite2D = $Visual
+@onready var visual: Node2D = $Visual
+@onready var cross_a: Polygon2D = $Visual/CrossA
+@onready var cross_b: Polygon2D = $Visual/CrossB
 
 var bob_time: float = 0.0
 
@@ -19,7 +21,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	bob_time += delta
 	visual.position.y = -10.0 + sin(bob_time * 4.0) * 4.0
-	z_index = int(position.y)
+	# +1000: mantem sempre positivo, acima do cenario (z 0), mesmo com Y negativo
+	z_index = int(position.y) + 1000
 
 func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group("player"):
