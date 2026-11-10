@@ -13,7 +13,7 @@ var _henchman_bag: Array[int] = []
 
 const CHARACTER_PATHS := [
 	"res://characters/hero_kai.tres",
-	"res://characters/hero_maya.tres",
+	"res://characters/hero_skinner.tres",
 	"res://characters/hero_diesel.tres",
 ]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgijcyx6fmi6l"
-path="res://.godot/imported/maya_kick.png-c5bc7c446d3e32a6ff8d8ed9ab8239fd.ctex"
+uid="uid://cjjpf0ys7l1sp"
+path="res://.godot/imported/galdor_idle.png-423118a139d12f72582afc646c99bf62.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maya/maya_kick.png"
-dest_files=["res://.godot/imported/maya_kick.png-c5bc7c446d3e32a6ff8d8ed9ab8239fd.ctex"]
+source_file="res://assets/enemies/galdor/galdor_idle.png"
+dest_files=["res://.godot/imported/galdor_idle.png-423118a139d12f72582afc646c99bf62.ctex"]
 
 [params]
 

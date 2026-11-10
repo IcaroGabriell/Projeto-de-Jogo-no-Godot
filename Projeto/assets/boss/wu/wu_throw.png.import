@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0qd7xi8jpdjn"
-path="res://.godot/imported/maya_bottle.png-97edeacd5f8ff9e5eefcae7718bc6a0b.ctex"
+uid="uid://cq2q47gp4qjyi"
+path="res://.godot/imported/wu_throw.png-ac07f7c6e4d6d2ea9c97bf07c26bbc07.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maya/maya_bottle.png"
-dest_files=["res://.godot/imported/maya_bottle.png-97edeacd5f8ff9e5eefcae7718bc6a0b.ctex"]
+source_file="res://assets/boss/wu/wu_throw.png"
+dest_files=["res://.godot/imported/wu_throw.png-ac07f7c6e4d6d2ea9c97bf07c26bbc07.ctex"]
 
 [params]
 

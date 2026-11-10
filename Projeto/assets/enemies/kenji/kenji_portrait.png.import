@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cast0v57jmf7g"
-path="res://.godot/imported/maya_portrait.png-b88b4cc42949f5ebf72654a2542b66c3.ctex"
+uid="uid://ba1u8e6tw5281"
+path="res://.godot/imported/kenji_portrait.png-e2ab733aeacf00b9bb6101d5da62b3ec.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maya/maya_portrait.png"
-dest_files=["res://.godot/imported/maya_portrait.png-b88b4cc42949f5ebf72654a2542b66c3.ctex"]
+source_file="res://assets/enemies/kenji/kenji_portrait.png"
+dest_files=["res://.godot/imported/kenji_portrait.png-e2ab733aeacf00b9bb6101d5da62b3ec.ctex"]
 
 [params]
 

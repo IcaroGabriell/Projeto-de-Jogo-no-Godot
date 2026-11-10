@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://civacr0ou7hx5"
-path="res://.godot/imported/maya_throw.png-ee0a3e7ea1d592ea15c856d86aad3e40.ctex"
+uid="uid://cubk4vm01rsnn"
+path="res://.godot/imported/spike_portrait.png-e59c0c0de192660ebc89079ff8219d9f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maya/maya_throw.png"
-dest_files=["res://.godot/imported/maya_throw.png-ee0a3e7ea1d592ea15c856d86aad3e40.ctex"]
+source_file="res://assets/enemies/spike/spike_portrait.png"
+dest_files=["res://.godot/imported/spike_portrait.png-e59c0c0de192660ebc89079ff8219d9f.ctex"]
 
 [params]
 

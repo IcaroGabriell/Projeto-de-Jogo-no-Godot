@@ -239,7 +239,7 @@ func _on_died() -> void:
 	tw.parallel().tween_property(visuals, "rotation", deg_to_rad(80.0) * facing, 0.6)
 	died.emit()
 
-## Usa a animacao preferida se o heroi tiver (ex.: Maya: kick/throw); senao, o fallback (punch).
+## Usa a animacao preferida se o heroi tiver (ex.: Skinner: kick/throw); senao, o fallback (punch).
 func _anim_or(preferred: String, fallback: String) -> String:
 	if uses_sprite and sprite.sprite_frames.has_animation(preferred):
 		return preferred

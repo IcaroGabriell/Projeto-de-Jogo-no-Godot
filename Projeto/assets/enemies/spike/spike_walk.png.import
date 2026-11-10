@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cng08235sgr4w"
-path="res://.godot/imported/maya_walk.png-b7422c4215d816b26aa1b73431a50eb9.ctex"
+uid="uid://ddlukkcknag6q"
+path="res://.godot/imported/spike_walk.png-521152efceb8e3bb61ce22b853f6fa47.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maya/maya_walk.png"
-dest_files=["res://.godot/imported/maya_walk.png-b7422c4215d816b26aa1b73431a50eb9.ctex"]
+source_file="res://assets/enemies/spike/spike_walk.png"
+dest_files=["res://.godot/imported/spike_walk.png-521152efceb8e3bb61ce22b853f6fa47.ctex"]
 
 [params]
 

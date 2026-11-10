@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bm3yfk288l7sv"
-path="res://.godot/imported/maya_idle.png-1f00047c20073725609efe1d5db030e3.ctex"
+uid="uid://dnb26qp702cdf"
+path="res://.godot/imported/skinner_throw.png-c39e95caad860502760398338913802d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maya/maya_idle.png"
-dest_files=["res://.godot/imported/maya_idle.png-1f00047c20073725609efe1d5db030e3.ctex"]
+source_file="res://assets/skinner/skinner_throw.png"
+dest_files=["res://.godot/imported/skinner_throw.png-c39e95caad860502760398338913802d.ctex"]
 
 [params]
 
